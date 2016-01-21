@@ -1,13 +1,16 @@
 package eu.europeana.redirects.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europeana.redirects.model.RedirectRequest;
 import eu.europeana.redirects.model.RedirectRequestList;
 import eu.europeana.redirects.service.RedirectService;
 import eu.europeana.redirects.service.mongo.MongoRedirectService;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 /**
  * REST Endpoint for Europeana Redirects Service module
@@ -15,14 +18,21 @@ import javax.ws.rs.core.Response;
  */
 @Path("/")
 public class RedirectResource {
-    private final RedirectService redirectService = new MongoRedirectService();
+    @Inject private  RedirectService redirectService;
+
+
 
     @POST
     @Path("/redirect/single")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response redirectSingle(@FormParam("record")RedirectRequest request){
-        return Response.ok().entity(redirectService.createRedirect(request)).build();
+    public Response redirectSingle(@FormParam("record")String request){
+        try {
+            return Response.ok().entity(redirectService.createRedirect(new ObjectMapper().readValue(request, RedirectRequest.class))).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     @POST
     @Path("/redirect/batch")
