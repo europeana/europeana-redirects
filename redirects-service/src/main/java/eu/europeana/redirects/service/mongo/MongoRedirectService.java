@@ -109,7 +109,7 @@ public class MongoRedirectService implements RedirectService {
             if (list.getNumFound() == 1) {
                 return list.get(0).getFieldValue("europeana_id").toString();
             }
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException e) {
             e.printStackTrace();
         }
         return null;
