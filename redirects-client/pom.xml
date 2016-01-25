@@ -16,11 +16,7 @@
             <artifactId>jersey-client</artifactId>
             <version>${version.jersey}</version>
         </dependency>
-        <dependency>
-            <groupId>eu.europeana</groupId>
-            <artifactId>validation-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
