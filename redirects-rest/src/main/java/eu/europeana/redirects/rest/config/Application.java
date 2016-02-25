@@ -7,6 +7,7 @@ import eu.europeana.redirects.model.RedirectResponseList;
 import eu.europeana.redirects.rest.RedirectResource;
 import eu.europeana.redirects.service.RedirectService;
 import eu.europeana.redirects.service.mongo.MongoRedirectService;
+import io.swagger.jaxrs.config.BeanConfig;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -26,7 +27,6 @@ public class Application extends ResourceConfig {
 
     public Application(final RedirectService service){
         super();
-       // register(DepBinder.class);
         register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -40,5 +40,12 @@ public class Application extends ResourceConfig {
         register(RedirectResponse.class);
         register(RedirectResponseList.class);
 
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0.2");
+        beanConfig.setSchemes(new String[]{"http"});
+        beanConfig.setHost("edm-validation-test.de.a9sapp.eu");
+        beanConfig.setBasePath("/");
+        beanConfig.setResourcePackage("eu.europeana.redirects.rest");
+        beanConfig.setScan(true);
     }
 }

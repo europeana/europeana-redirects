@@ -3,8 +3,13 @@ package eu.europeana.redirects.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.europeana.redirects.model.RedirectRequest;
 import eu.europeana.redirects.model.RedirectRequestList;
+import eu.europeana.redirects.model.RedirectResponse;
+import eu.europeana.redirects.model.RedirectResponseList;
 import eu.europeana.redirects.service.RedirectService;
 import eu.europeana.redirects.service.mongo.MongoRedirectService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -17,6 +22,7 @@ import java.io.IOException;
  * Created by ymamakis on 1/15/16.
  */
 @Path("/")
+@Api("/")
 public class RedirectResource {
     @Inject private  RedirectService redirectService;
 
@@ -26,7 +32,8 @@ public class RedirectResource {
     @Path("/redirect/single")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response redirectSingle(@FormParam("record")String request){
+    @ApiOperation(value="Generate a single redirect",response = RedirectResponse.class)
+    public Response redirectSingle(@ApiParam("record") @FormParam("record")String request){
         try {
             return Response.ok().entity(redirectService.createRedirect(new ObjectMapper().readValue(request, RedirectRequest.class))).build();
         } catch (IOException e) {
@@ -38,7 +45,8 @@ public class RedirectResource {
     @Path("/redirect/batch")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response redirectBatch(@FormParam("records")RedirectRequestList requestList){
+    @ApiOperation(value="Generate batch redirects",response = RedirectResponseList.class)
+    public Response redirectBatch(@ApiParam("records") @FormParam("records")RedirectRequestList requestList){
         return Response.ok().entity(redirectService.createRedirects(requestList)).build();
     }
 
