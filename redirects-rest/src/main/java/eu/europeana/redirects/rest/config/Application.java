@@ -18,7 +18,7 @@ import javax.ws.rs.ApplicationPath;
  * Jersey Configuration class
  * Created by ymamakis on 1/15/16.
  */
-@ApplicationPath("/")
+@ApplicationPath("/rest")
 public class Application extends ResourceConfig {
 
     public Application(){
@@ -39,12 +39,13 @@ public class Application extends ResourceConfig {
         register(RedirectRequestList.class);
         register(RedirectResponse.class);
         register(RedirectResponseList.class);
-
+        register(io.swagger.jaxrs.listing.ApiListingResource.class);
+        register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.2");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("edm-validation-test.de.a9sapp.eu");
-        beanConfig.setBasePath("/");
+        beanConfig.setHost("metis-redirects-test");
+        beanConfig.setBasePath("/rest");
         beanConfig.setResourcePackage("eu.europeana.redirects.rest");
         beanConfig.setScan(true);
     }
